@@ -22,32 +22,35 @@ function MoviesCollection() {
     return (
         <Grid container spacing={2}>
             <Typography xs={12} marginTop={10} marginLeft={2} position='absolute'>FILMS</Typography>
-            {movies && movies.map((movie, index) => (
-                <Grid 
-                    xs={4} 
-                    md={4} 
-                    lg={3} 
-                    xl={2} 
-                    key={index} 
-                    margin={2} 
-                    position='relative' 
-                    top={100} 
-                    style={{ 
-                        transition: 'transform 0.3s',
-                    }} 
-                    className="movie-grid"
-                >
-                    <MovieCard 
-                        title={movie.name} 
-                        restriction={movie.age_restriction} 
-                        description={movie.description} 
-                        categorys={movie.category}
-                        publicated_date={movie.publication_date}
-                        url={movie.slug}
-                        img={movie.image}
-                    />
-                </Grid>
-            ))}
+            
+                {movies && movies.map((movie, index) => (
+                    <Grid 
+                        xs={4} 
+                        md={4} 
+                        lg={3} 
+                        xl={2} 
+                        key={index} 
+                        margin={2} 
+                        position='relative' 
+                        top={100} 
+                        style={{ 
+                            transition: 'transform 0.3s',
+                        }} 
+                        className="movie-grid"
+                    >
+                        <MovieCard 
+                            mov={movie}
+                            title={movie.name} 
+                            restriction={movie.age_restriction} 
+                            description={movie.description} 
+                            categorys={movie.category}
+                            publicated_date={movie.publication_date}
+                            url={movie.slug}
+                            img={movie.image}
+                        />
+                    </Grid>
+                ))}
+            
         </Grid>
     )
 }

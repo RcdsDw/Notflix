@@ -6,6 +6,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import ArrowCircleDownRoundedIcon from '@mui/icons-material/ArrowCircleDownRounded';
 import ShareIcon from '@mui/icons-material/Share';
 import { styled } from '@mui/material/styles';
 import { useNavigate } from "react-router-dom";
@@ -14,66 +15,104 @@ import { useState } from 'react'
 const StyledCard = styled(Card)`
     position: relative;
     background: linear-gradient(to top, rgba(45,45,45), rgba(25,25,25), rgba(0,0,0));
-    transition: transform 0.7s ease;
+    transition: transform 0.5s ease;
     &:hover {
-        transform: scale(1.1);
+        transform: scale(1.15);
         position: absolute;
         z-index: 2
       }
 `;
 
+const StyledIconButton = styled(IconButton)`
+    transition: transform 0.7s ease;
+    &:hover {
+        transform: scale(1.1);
+        color: #FF0000AB;
+    }
+`;
+
 export default function MovieCard({title, restriction, description, categorys, publicated_date, url, img}) {
 
     const [cardHover, setCardHover] = useState(false)
+    const [modal, setModal] = useState(false)
 
     const navigate = useNavigate();
 
     function handleClick() {
-        navigate(`/details/${url}`)
+        setModal(true);
+        /* navigate(`/details/${url}`) */
     }
 
     return (
-        <StyledCard sx={{ minWidth: 275, maxWidth: 310, maxHeight: 530}} onClick={handleClick}>
+        <StyledCard 
+            sx={{ 
+                minWidth: 275, 
+                maxWidth: 310, 
+                maxHeight: 530}} 
+            onMouseOver={() => {
+                setCardHover(true);
+            }}
+            onMouseOut={() => {
+                setCardHover(false);
+            }}
+            >
             <CardMedia
                 component="img"
                 height="194"
                 image={img}
                 alt={title}
-                onMouseOver={() => {
-                    setCardHover(true);
-                }}
-                onMouseOut={() => {
-                    setCardHover(false);
-                }}
-                style={{
-                    objectFit: 'cover'
-                }}
+                
             />
             {cardHover &&
             <CardContent>
-                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                    {categorys}
-                </Typography>
+                <CardActions 
+                    disableSpacing 
+                    style={{
+                        position: 'relative',
+                        top: '-15px',
+                        left: '-15px',
+                    }}
+                >
+                    <StyledIconButton aria-label="add to favorites">
+                        <FavoriteIcon />
+                    </StyledIconButton>
+                    <StyledIconButton aria-label="share">
+                        <ShareIcon />
+                    </StyledIconButton>
+                    <IconButton 
+                        aria-label="add to favorites"
+                        /* onClick={handleClick} */
+                        style={{
+                            position: 'absolute',
+                            right: '0px'
+                        }}
+                    >
+                        <ArrowCircleDownRoundedIcon/>
+                    </IconButton>
+                </CardActions>
                 <Typography variant="h5" component="div">
                     {title}
                 </Typography>
-                <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                    {publicated_date}
+                <Typography 
+                    variant="body2"
+                    style={{
+                        width: 'max-content',
+                        border:'solid 1px',
+                        padding: '0px 2px',
+                    }}
+                >
+                    {restriction}+
                 </Typography>
-                <Typography variant="body2">
+                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                    {categorys}
+                </Typography>
+            </CardContent>
+            }
+            {modal &&
+            <CardContent>
+                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                     {description}
-                    <br />
-                    <br />
-                    PEGI {restriction}
                 </Typography>
-                <CardActions disableSpacing >
-                    <IconButton aria-label="add to favorites">
-                        <FavoriteIcon />
-                    </IconButton>
-                    <IconButton aria-label="share">
-                        <ShareIcon />
-                    </IconButton>
-                </CardActions>
             </CardContent>
             }
         </StyledCard>

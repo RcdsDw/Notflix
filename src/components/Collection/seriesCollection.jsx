@@ -18,14 +18,21 @@ function SeriesCollection() {
     useEffect(() => {
         FetchSeries()
     }, [])
-    
-    console.log(series)
 
     return (
         <Grid container spacing={2}>
             <Typography xs={12} marginTop={12} marginLeft={2} position='absolute'>SERIES</Typography>
             {series && series.map((serie, index) => (
-                <Grid xs={2} key={index} margin={2} position='relative' top={105}>
+                <Grid 
+                    xs={2} 
+                    key={index} 
+                    margin={2} 
+                    position='relative' 
+                    top={105}
+                    style={{ 
+                        transition: 'transform 0.3s',
+                    }} 
+                >
                     <SerieCard 
                         title={serie.name} 
                         restriction={serie.age_restriction} 
