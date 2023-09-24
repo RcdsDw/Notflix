@@ -1,30 +1,56 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../../service/api";
+import { LoginPost } from "../../service/login";
 import 'bootstrap/dist/css/bootstrap.css';
 
 function Login() {
 
+    const [error, setError] = useState("")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+
     const navigate = useNavigate();
 
-    const handleClick = () => {
+    async function handleSubmit(e) {
+        e.preventDefault();
+
+        let res = await LoginPost(email, password)
+        setError("")
+
+        if (!res) {
+            setError("Impossible de crée l'utilisateur")
+        } else {
+            navigate("/homepage");
+        } 
+    }
+
+    function handleNavigate() {
         navigate("/register");
     }
 
+    function handleEmail(e) {
+        setEmail(e.target.value)
+    }
+
+    function handlePassword(e) {
+        setPassword(e.target.value)
+    }
+    
     return (
-        <div class="">
-            <form class="w-25">
-                <div class="form-floating m-3">
-                    <input type="text" name="email" class="form-control" placeholder="Email" required />
-                    <label class="form-label">Email </label> 
+        <div className="d-flex justify-content-center" style={{marginTop: 350 + 'px'}}>
+            <form className="w-25">
+                <h1 className="d-flex justify-content-center">Connexion</h1>
+                <div className="form-floating m-3">
+                    <input type="text" name="email" className="form-control" placeholder="Email" id="email" value={email} onChange={handleEmail} required/>
+                    <label className="form-label">Email </label> 
                 </div>
-                <div class="form-floating m-3">
-                    <input type="password" name="pass" placeholder="Enter Password" class="form-control" required />
-                    <label class="form-label">Password </label>   
+                <div className="form-floating m-3">
+                    <input type="password" name="pass" placeholder="Enter Password" className="form-control" id="password" value={password} onChange={handlePassword} required/>
+                    <label className="form-label">Password </label>   
                 </div>
-                <div class="d-flex justify-content-center">
-                    <input type="submit" class="btn btn-primary m-3"/>
-                    <button type="button" onClick={handleClick} class="btn btn-primary m-3">Register</button>
+                <div className="d-flex justify-content-center">
+                    <input type="submit" onClick={handleSubmit} className="btn btn-primary m-3"/>
+                    <button type="button" onClick={handleNavigate} className="btn btn-primary m-3">S'enregistrer</button>
                 </div>
             </form>
         </div>

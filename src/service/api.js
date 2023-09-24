@@ -1,13 +1,14 @@
-async function send_(method, path, data) {
+
+
+async function send_(method, path, data, useToken = true) {
 
     let headers = {
         "Content-Type": "application/json",
     };
-
-    /* if (process.env.REACT_APP_LOCALSTORAGE) {
+    if (localStorage.getItem("userToken") && useToken) {
         headers.Authorization =
-            "Bearer " + process.env.REACT_APP_LOCALSTORAGE;
-    } */
+            "Bearer " + localStorage.getItem("userToken");
+    }
     return await fetch(`${process.env.REACT_APP_API}${path}`, {
         method: method,
         headers,
@@ -15,30 +16,18 @@ async function send_(method, path, data) {
     });
 }
 
-export async function post(path, data) {
-    return await send_("POST", path, data);
+export async function post(path, data, useToken) {
+    return await send_("POST", path, data, useToken);
 }
 
-export async function get(path, data) {
-    return await send_("GET", path, data);
+export async function get(path, data, useToken) {
+    return await send_("GET", path, data, useToken);
 }
 
-export async function remove(path, data) {
-    return await send_("DELETE", path, data);
+export async function remove(path, data, useToken) {
+    return await send_("DELETE", path, data, useToken);
 }
 
-export async function put(path, data) {
-    return await send_("PUT", path, data);
+export async function put(path, data, useToken) {
+    return await send_("PUT", path, data, useToken);
 }
-
-async function apiPost(email, plainPassword) {
-    let res = await post(`/register`, { email, plainPassword })
-    if (res.ok) {
-        console.log(res)
-        return await res.json()
-    } else {
-        return false;
-    }
-}
-
-export default apiPost
